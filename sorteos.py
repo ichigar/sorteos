@@ -2,12 +2,22 @@ from abc import ABC, abstractmethod
 from random import randint
 
 class Loteria(ABC):
+    L_COMBINACION = 6
+    MAX_COMBINACION = 49
+    
     def __init__(self):
         self.combinación = []
-    
-    @abstractmethod
+        
     def _generar_números(self):
-        pass
+        self.combinación = []
+        cont_numeros = 0
+        while cont_numeros < self.L_COMBINACION:
+            numero = randint(1, self.MAX_COMBINACION)
+            if numero not in self.combinación:
+                self.combinación.append(numero)
+                cont_numeros += 1
+            
+        self.combinación.sort()
     
     @abstractmethod
     def get_boleto(self):
@@ -29,16 +39,8 @@ class Euromillon(Loteria):
         self._generar_números()
         
     def _generar_números(self):
-        self.combinación = []
-        cont_numeros = 0
-        while cont_numeros < self.L_COMBINACION:
-            numero = randint(1, self.MAX_COMBINACION)
-            if numero not in self.combinación:
-                self.combinación.append(numero)
-                cont_numeros += 1
-            
-        self.combinación.sort()
-        
+        super()._generar_números()
+                
         cont_numeros = 0
         while cont_numeros < self.L_ESTRELLAS:
             numero = randint(1, self.MAX_ESTRELLAS)
@@ -58,23 +60,22 @@ class Euromillon(Loteria):
         return f"{self.combinación} - {self.estrellas}"    
     
 class Primitiva(Loteria):
-    L_COMBINACION = 6
-    MAX_COMBINACION = 49
+    
     
     def __init__(self):
         super().__init__()
         self._generar_números()
         
-    def _generar_números(self):
-        self.combinación = []
-        cont_numeros = 0
-        while cont_numeros < self.L_COMBINACION:
-            numero = randint(1, self.MAX_COMBINACION)
-            if numero not in self.combinación:
-                self.combinación.append(numero)
-                cont_numeros += 1
+    # def _generar_números(self):
+    #     self.combinación = []
+    #     cont_numeros = 0
+    #     while cont_numeros < self.L_COMBINACION:
+    #         numero = randint(1, self.MAX_COMBINACION)
+    #         if numero not in self.combinación:
+    #             self.combinación.append(numero)
+    #             cont_numeros += 1
             
-        self.combinación.sort()
+    #     self.combinación.sort()
         
     def get_boleto(self):
         return self.combinación
@@ -118,6 +119,8 @@ class Sorteo:
         print(f"Combinacion ganadora: {self.primitiva.get_boleto()}")
         for primitiva in self.registro.primitivas:
             print(f"{primitiva.get_boleto()} - {self.__n_aciertos_primitiva(primitiva)}")
+    
+
             
 if __name__ == "__main__":
     # Generamos 10 primitivas y las registramos
