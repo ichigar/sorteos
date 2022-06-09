@@ -119,6 +119,17 @@ class Sorteo:
         for primitiva in self.registro.primitivas:
             print(f"{primitiva.get_boleto()} - {self.__n_aciertos_primitiva(primitiva)}")
             
+    def mostrar_estadisticas_primitivas(self):
+        print(f"Combinacion ganadora: {self.primitiva.get_boleto()}")
+        aciertos = []
+        for i in range(Primitiva.L_COMBINACION):
+            aciertos.append(0)
+        for primitiva in self.registro.primitivas:
+            n_aciertos_boleto = self.__n_aciertos_primitiva(primitiva)
+            aciertos[n_aciertos_boleto] += 1
+        for i in range(Primitiva.L_COMBINACION):
+            print(f"{i} aciertos: {aciertos[i]}")
+            
 if __name__ == "__main__":
     # Generamos 10 primitivas y las registramos
     registro = Registro()
@@ -131,6 +142,7 @@ if __name__ == "__main__":
     
     # Mostramos los resultados
     sorteo.mostrar_aciertos_primitivas()
+    sorteo.mostrar_estadisticas_primitivas()
     
         
         
