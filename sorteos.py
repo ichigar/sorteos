@@ -7,7 +7,15 @@ class Loteria(ABC):
     
     @abstractmethod
     def _generar_números(self):
-        pass
+        self.combinación = []
+        cont_numeros = 0
+        while cont_numeros < self.L_COMBINACION:
+            numero = randint(1, self.MAX_COMBINACION)
+            if numero not in self.combinación:
+                self.combinación.append(numero)
+                cont_numeros += 1
+            
+        self.combinación.sort()
     
     @abstractmethod
     def get_boleto(self):
@@ -29,15 +37,7 @@ class Euromillon(Loteria):
         self._generar_números()
         
     def _generar_números(self):
-        self.combinación = []
-        cont_numeros = 0
-        while cont_numeros < self.L_COMBINACION:
-            numero = randint(1, self.MAX_COMBINACION)
-            if numero not in self.combinación:
-                self.combinación.append(numero)
-                cont_numeros += 1
-            
-        self.combinación.sort()
+        super()._generar_números()
         
         cont_numeros = 0
         while cont_numeros < self.L_ESTRELLAS:
@@ -66,15 +66,7 @@ class Primitiva(Loteria):
         self._generar_números()
         
     def _generar_números(self):
-        self.combinación = []
-        cont_numeros = 0
-        while cont_numeros < self.L_COMBINACION:
-            numero = randint(1, self.MAX_COMBINACION)
-            if numero not in self.combinación:
-                self.combinación.append(numero)
-                cont_numeros += 1
-            
-        self.combinación.sort()
+        super()._generar_números()
         
     def get_boleto(self):
         return self.combinación
@@ -115,12 +107,12 @@ class Sorteo:
                 n_aciertos += 1
         return n_aciertos
     def mostrar_aciertos_primitivas(self):
-        print(f"Combinacion ganadora: {self.primitiva.get_boleto()}")
+        print(f"Combinacion ganadora de la primitiva: {self.primitiva.get_boleto()}")
         for primitiva in self.registro.primitivas:
             print(f"{primitiva.get_boleto()} - {self.__n_aciertos_primitiva(primitiva)}")
             
     def mostrar_estadisticas_primitivas(self):
-        print(f"Combinacion ganadora: {self.primitiva.get_boleto()}")
+        print(f"Combinacion ganadora de la primitiva: {self.primitiva.get_boleto()}")
         aciertos = []
         for i in range(Primitiva.L_COMBINACION):
             aciertos.append(0)
@@ -140,7 +132,7 @@ if __name__ == "__main__":
     # Realizamos un sorteo
     sorteo = Sorteo(registro)
     
-    # Mostramos los resultados
+    # Mostramos los resultados de la primitiva
     sorteo.mostrar_aciertos_primitivas()
     sorteo.mostrar_estadisticas_primitivas()
     
